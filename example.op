@@ -1,0 +1,26 @@
+@begin md
+## What is OP?!
+
+OP is an all-in-one markup language！
+
+[Link](https://github.com/mathjax/MathJax-node)！
+Inline math like Lua comments: @math|\oplus|，inline math@math||\oplus||！
+@begin py
+    o = object();p = print
+    for i in range(1, 4):
+        p("#" * i, "Object Printing!", hash(o))
+        o = object()
+    x = 5
+@end py
+@begin math svg
+    x = 5 \\
+    1 + x^2 = @py|1 + x**2|
+@end math
+@begin comment
+command statement:
+    @begin name argument1 argument2...
+        block
+    @end name
+inline命令: @name + |||... + code + ...|||
+@end comment
+@end md
