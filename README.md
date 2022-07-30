@@ -40,6 +40,8 @@ inline命令: @name + |||... + code + ...|||
 @end md
 ```
 
+![demo](static/demo.png)
+
 ## Commands
 
 Under construction but it's damn simple.
