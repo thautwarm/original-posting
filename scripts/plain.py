@@ -1,7 +1,7 @@
 from original_posting import CommandEntry, Context
 
 
-class PlanCommand(CommandEntry):
+class PlainCommand(CommandEntry):
     def __init__(self, ctx: Context):
         self.ctx = ctx
 
