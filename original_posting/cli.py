@@ -4,6 +4,7 @@ import wisepy2
 import pathlib
 import typing
 import warnings
+import sys
 
 def _batch_compile_impl(file: Path, out: Path, force: bool, suffix: str):
     if file.is_dir():
@@ -31,6 +32,7 @@ def command(filename: str, *, out: str = "", extra_search_path: str = "", force:
     op a.op --out a.html --force
     op src/ --out dst/ --force --batch --suffix .html
     """
+    sys.argv.clear()
     if extra_search_path:
         Runtime.search_path.extend(filter(None, extra_search_path.split(';')))
     if batch:
