@@ -36,6 +36,9 @@ class OPDocument:
     code: str = ""
     title: str = ""
 
+    def __repr__(self) -> str:
+        
+        return f'<OPDocuement {self.project_based_path} in {self.project_path_absolute}>'
 
 @dataclass
 class Scope:

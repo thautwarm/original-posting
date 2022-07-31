@@ -338,7 +338,8 @@ def match_tag(p: P, o: object, group: dict | None = None) -> bool:
 
 
 def match_any_tag(p: P, obs: list[object], group: dict | None = None) -> bool:
-    group = group or {}
+    if group is None:
+        group = {}
     for o in obs:
         if p(o, group):
             return True

@@ -85,6 +85,7 @@ class Replacer:
                 title_text = h1.text
                 title_node.append(title_text)
                 doc.title = title_text
+
         else:
             doc.title = title_text
         toc = html.find("div", {"class": "toc", "refid": self.uuid})

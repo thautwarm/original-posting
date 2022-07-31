@@ -100,7 +100,7 @@ class Build:
         return True
 
     def _performance_global_callbacks(self):
-        for each in self.built_docs.values():
+        for each in reversed(self.built_docs.values()):
             for my_callback in each.callbacks:
                 my_callback(each)
 
