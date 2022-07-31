@@ -20,6 +20,8 @@ Markdown is not enough? Integrated MathJax is buggy? Want literate programming? 
 
 **NOTE**: the `math` command is using MathJax, which requires you to install `nodejs` in PATH with `mathjax-node` installed.
 
+P.S: My blog [Site-33](https://github.com/thautwarm/Site-33) is totally written in OP. It's simple and you can learn about how to use OP efficiently.
+
 ## Demo
 ```julia
 @begin md
