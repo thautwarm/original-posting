@@ -13,7 +13,7 @@ mn = javascript.require("mathjax-node")
 mn.config({"MathJax": {}})
 
 
-def mathjax2html(code, use_svg=False):
+def mathjax2html(code, use_svg=True):
     last_result = None
 
     def set_result(x):

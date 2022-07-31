@@ -78,16 +78,14 @@ class Replacer:
         if not title_node:
             title_node = html.new_tag("title")
             html.insert(0, title_node)
-        title_text = title_node.text.strip()
-        if not title_text:
-            h1 = html.find("h1")
-            if h1:
-                title_text = h1.text
+        
+        h1 = html.find("h1")
+        if h1:
+            title_text = h1.text
+            if not title_node.text:
                 title_node.append(title_text)
-                doc.title = title_text
-
-        else:
             doc.title = title_text
+
         toc = html.find("div", {"class": "toc", "refid": self.uuid})
         if not toc:
             return
