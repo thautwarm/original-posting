@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 import pathlib
 from typing import ChainMap
 from original_posting.parsing import process_nest
@@ -10,7 +11,7 @@ from original_posting.ptag_dsl import (
     string_to_pattern,
 )
 from original_posting.types import OPDocument, CommandEntry, Context
-from original_posting.utils import get_project_based_path, global_gensym
+from original_posting.utils import get_relative_path, global_gensym
 import original_posting.builtin_names as names
 import functools
 import bs4
@@ -34,11 +35,15 @@ class FilterIndex:
             return
         format_func = self.ctx.storage.get(names.NAME_IndexFormatter, default_format)
         scope = ChainMap({}, self.scope)
+
+        # TODO: use root directory of output path instead of project path
+        parts1 = ('..', ) * (len(doc.output_path_absolute.relative_to(doc.project_path_absolute).parts) - 1)
         for each in doc.project_docs.values():
-            each.working_dir_absolute
 
             if match_any_tag(self.P, each.tags, scope):  # type: ignore
-                path = str(pathlib.Path(each.project_based_path).with_suffix(".html"))
+                part2 = each.output_path_absolute.relative_to(doc.project_path_absolute).parts
+                path = os.path.join(*parts1, *part2)
+                # path = str(pathlib.Path(each.project_based_path).with_suffix(".html"))
                 display_text = format_func(each) or default_format(each)
                 li = html.new_tag("li")
                 a = html.new_tag("a", href=path)

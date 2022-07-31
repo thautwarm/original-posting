@@ -25,7 +25,7 @@ def create_syntax_error(msg: str, text: str, line: int, offset: int, file: str):
     return e
 
 
-def get_project_based_path(file: str | pathlib.Path, rootdir: str | pathlib.Path):
+def get_relative_path(file: str | pathlib.Path, rootdir: str | pathlib.Path):
     if isinstance(file, str):
         file = pathlib.Path(file)
     if isinstance(rootdir, str):

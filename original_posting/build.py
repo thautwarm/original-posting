@@ -2,7 +2,7 @@ from __future__ import annotations
 from collections import deque
 from dataclasses import dataclass
 from original_posting.parsing import process
-from original_posting.utils import get_project_based_path
+from original_posting.utils import get_relative_path
 from original_posting.types import OPDocument
 import original_posting.builtin_names as names
 import pathlib
@@ -49,7 +49,7 @@ class Build:
         file_to_include: the absolute path of the file to include
         """
         assert file_to_include.is_absolute()
-        proj_based_path = get_project_based_path(file_to_include, self.project_path)
+        proj_based_path = get_relative_path(file_to_include, self.project_path)
 
         if proj_based_path in self.processed_files:
             return
