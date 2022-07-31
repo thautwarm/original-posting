@@ -48,7 +48,8 @@ def new_context(filename: str, source: str | None = None):
     )
 
 
-def new_context_from_existing(filename: str, source: str, start: int, end: int, start_line: int, start_col: int):
+def new_context_from_existing(
+    filename: str, source: str, start: int, end: int, start_line: int, start_col: int, storage: dict):
     if source is None:
         with open(filename, encoding="utf-8") as f:
             source = f.read()
@@ -62,7 +63,7 @@ def new_context_from_existing(filename: str, source: str, start: int, end: int, 
         os="unknown",
         linesep=os.linesep,
         file=filename,
-        storage={},
+        storage=storage,
     )
 
 
@@ -83,7 +84,7 @@ class CommandEntry(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def proc(self, args: list[str], start: int, end: int):
+    def proc(self, argv: list[str], start: int, end: int):
         raise NotImplementedError
 
     def inline_proc(self, start: int, end: int):
@@ -293,7 +294,7 @@ def _end_scope(builder: io.StringIO, ctx: Context, i: int):
     assert cur_scope
     if not cmd.strip():
         raise create_syntax_error(
-            f"@end followed by no command name, did you mean by @end {cur_scope.name}?",
+            f"'@end' followed by no command name, did you mean by '@end {cur_scope.name}'?",
             text=ctx.source[o_orig:i_line_end],
             line=ctx.line,
             offset=i,
@@ -402,7 +403,7 @@ def process_nest(ctx: Context, start: int, end: int):
     assert ctx.cur_scope
     cur_scope = ctx.cur_scope
     new_ctx = new_context_from_existing(
-        ctx.file, ctx.source, start, end, cur_scope.start_line, cur_scope.start_col)
+        ctx.file, ctx.source, start, end, cur_scope.start_line, cur_scope.start_col, ctx.storage)
     buf = io.StringIO()
     while process_iter(buf, new_ctx):
         pass

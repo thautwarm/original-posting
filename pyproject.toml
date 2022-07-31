@@ -6,7 +6,7 @@ authors = ["thautwarm <twshere@outlook.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-wisepy2 = "^1.2.1"
+wisepy2 = "^1.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

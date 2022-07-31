@@ -18,6 +18,7 @@ else:
 def parse_args(*, lang: str = "", mkstyle: bool = False):
     return dict(lang=lang, mkstyle=mkstyle)
 
+parse_args.__annotations__ = typing.get_type_hints(parse_args)
 
 class CodeHighlightEntry(CommandEntry):
     def __init__(self, ctx: Context):
