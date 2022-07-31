@@ -8,8 +8,6 @@ import re
 import shlex
 import typing
 
-__version__ = "0.1.0"
-
 
 _line_end = re.compile("\n\r|\n|\r|$")
 _inline_command_head = re.compile(r"[^ \r\n\t\|]+\|")
@@ -81,8 +79,6 @@ def find_match(
             offset += 1
 
 
-
-
 _cmd_modules: dict[str, typing.Type[CommandEntry]] = {}
 
 
@@ -102,8 +98,6 @@ def get_command_entry(cmd_name: str):
         ):
             _cmd_modules[cmd_name] = v
             return v
-
-
 
 
 def find_file(filename: str) -> str | None:

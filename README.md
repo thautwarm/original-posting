@@ -6,7 +6,7 @@ Markdown is not enough? Integrated MathJax is buggy? Want literate programming? 
 
 1. Installation: `pip install git+https://github.com/thautwarm/original-posting`.
 2. Moving files in `./scripts` to your `$HOME/.original-posting/`.
-3. Rendering `.op`: `op example.op --out example.html --force [--extra_search_path="./scripts"]`
+3. Rendering `.op`: `op index.op --out example/ --force [--extra_search_path="./scripts"]`
 
 ## Extra Requirements of Commands
 
@@ -62,6 +62,15 @@ A command in OP is a Python file found in `$HOME/.original-posting/`. They are i
 
     `@toc|--depth 2|` creates table of contents by document hierarchies within depth 2. It only works when placed within a `@md` block.
 
+- `@include`
+- `@md`
+- `@ptag-set`: set parametric tags for the current document.
+- `@ptag-filter-index`: create a list that filters documents whose tags match the given patterns.
+- `@math`
+- `@plain`: the inner block will not do macroexpand and no escape is required.
+- `@comment`
+- `@py`
+- `@toc`
 - `@code`
 
     - Adding style sheet to the document (not necessary):
