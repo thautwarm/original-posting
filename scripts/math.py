@@ -1,5 +1,5 @@
-import typing
-from original_posting import CommandEntry, Context, process_nest
+from original_posting.types import CommandEntry, Context
+from original_posting.parsing import process_nest
 from multiprocessing.pool import ThreadPool
 import javascript
 import time

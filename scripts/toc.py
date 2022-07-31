@@ -1,15 +1,14 @@
 """
 'toc' command generates a table of contents for the given file.
-@begin toc --depth 2
-Table of contents
-@end toc
+e.g.,
+    @toc|--depth 2|
 """
-from ast import USub
-from original_posting import CommandEntry, Context, process_nest
+from original_posting.types import CommandEntry, Context, OPDocument
+from original_posting.parsing import process_nest
+from original_posting.utils import global_gensym, make_valid_identifier
 import bs4
 import wisepy2
 import typing
-import uuid
 import shlex
 
 
@@ -32,7 +31,7 @@ def generate_toc(
 
     def add_sub(n: bs4.Tag):
         title = n.text
-        address = str(uuid.uuid4())
+        address = global_gensym(make_valid_identifier(title))
         n.insert(0, doc.new_tag("div", id=address))
         li = doc.new_tag("li")
         a = doc.new_tag("a", href="#" + address)
@@ -72,14 +71,28 @@ class Replacer:
         self.uuid = uuid
         self.depth = depth
 
-    def __call__(self, source: str):
-        doc = bs4.BeautifulSoup(source, "html.parser")
-        toc = doc.find("div", {"class": "toc", "refid": self.uuid})
+    def __call__(self, doc: OPDocument) -> None:
+        source: str = doc.code
+        html = bs4.BeautifulSoup(source, "html.parser")
+        title_node = html.find("title")
+        if not title_node:
+            title_node = html.new_tag("title")
+            html.insert(0, title_node)
+        title_text = title_node.text.strip()
+        if not title_text:
+            h1 = html.find("h1")
+            if h1:
+                title_text = h1.text
+                title_node.append(title_text)
+                doc.title = title_text
+        else:
+            doc.title = title_text
+        toc = html.find("div", {"class": "toc", "refid": self.uuid})
         if not toc:
-            return source
-        inner = generate_toc(1, self.depth, [doc], doc)
+            return
+        inner = generate_toc(1, self.depth, [html], html)
         toc.append(inner)
-        return str(doc)
+        doc.code = str(html)
 
 
 class TocEntry(CommandEntry):
@@ -88,9 +101,8 @@ class TocEntry(CommandEntry):
 
     def proc(self, argv: list[str], _start: int, _stop: int) -> str:
         args = wisepy2.wise(parse_args)(argv)
-        ref_id = str(uuid.uuid4())
-        callbacks = self.ctx.storage.setdefault("markdown-postprocessing", [])
-        callbacks.append(Replacer(ref_id, args.depth))
+        ref_id = global_gensym(make_valid_identifier("toc"))
+        self.ctx.target_doc.callbacks.append(Replacer(ref_id, args.depth))
         return f'<div class="toc" refid="{ref_id}"></div>'
 
     def inline_proc(self, _start: int, _end: int) -> str:

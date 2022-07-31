@@ -1,8 +1,8 @@
-from original_posting import CommandEntry, Context, process_nest
 from contextlib import redirect_stdout
+from original_posting import CommandEntry, Context, process_nest
+import original_posting.builtin_names as names
 import io
 
-scope = {}
 
 class PyIO(CommandEntry):
     def __init__(self, ctx: Context):
@@ -11,6 +11,7 @@ class PyIO(CommandEntry):
     def proc(self, args: list[str], _start: int, _stop: int) -> str:
         use_expr = "expr" in args
         code = process_nest(self.ctx, _start, _stop)
+        scope = self.ctx.storage.setdefault(names.NAME_PythonScope, {})
         if use_expr:
             code = code.strip()
             bc = compile(code, self.ctx.file, mode="eval")
@@ -27,4 +28,4 @@ class PyIO(CommandEntry):
         return out.getvalue()
 
     def inline_proc(self, start: int, end: int):
-        return self.proc(['expr'], start, end)
+        return self.proc(["expr"], start, end)
