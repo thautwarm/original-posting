@@ -46,7 +46,7 @@ class Mathjax(CommandEntry):
 
     def proc(self, args: list[str], _start: int, _stop: int) -> str:
         code = process_nest(self.ctx, _start, _stop)
-        coro = pool.apply_async(mathjax2html, [code, "svg" in args])
+        coro = pool.apply_async(mathjax2html, [code, not ("html" in args)])
         res = coro.get()
         assert isinstance(res, str)
         return res

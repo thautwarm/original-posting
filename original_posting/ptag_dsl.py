@@ -117,6 +117,24 @@ def cps_and(p1: P, p2: P):
     return apply
 
 
+def cps_and_seq(p1: P, p2: P):
+    def apply(o, scope):
+        if not isinstance(o, list):
+            return False
+        l = False
+        r = False
+        for each in o:
+            if l and r:
+                return True
+            if not l and p1(each, scope):
+                l = True
+            if not r and p2(each, scope):
+                r = True
+        return l and r
+
+    return apply
+
+
 def cps_predicate(f):
     def apply(o, scope):
         return f(o, scope)
