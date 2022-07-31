@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "original-posting"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["thautwarm <twshere@outlook.com>"]
 
@@ -8,6 +8,7 @@ authors = ["thautwarm <twshere@outlook.com>"]
 python = "^3.9"
 wisepy2 = "^1.3"
 diskcache = "^5.4.0"
+beautifulsoup4 = "^4.11.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

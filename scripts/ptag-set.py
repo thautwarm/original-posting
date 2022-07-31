@@ -1,7 +1,6 @@
 from __future__ import annotations
 from original_posting import CommandEntry, Context, process_nest
 from original_posting.ptag_dsl import string_to_expr_code, string_expr_builder
-from original_posting.utils import get_project_based_path
 import original_posting.builtin_names as names
 
 
