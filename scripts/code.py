@@ -79,10 +79,10 @@ class CodeHighlightEntry(CommandEntry):
         lexer = get_lexer_by_name(lang)
         hightlighted_code = highlight(code, lexer, formatter)
         if inline:
-            html = bs4.BeautifulSoup(hightlighted_code)
+            html = bs4.BeautifulSoup(hightlighted_code, "html.parser")
             pre = html.find("pre")
             assert isinstance(pre, bs4.Tag)
             code_tag = html.new_tag("code")
-            code_tag.extend(pre.contents)
+            code_tag.contents.extend(pre.contents)
             return str(code_tag)
         return hightlighted_code
