@@ -59,9 +59,12 @@ class CodeHighlightEntry(CommandEntry):
         else:
             local_data[CachedLanguageKey] = lang
 
-        return self.inline_proc(_start, _end)
+        return self._impl(_start, _end, False)
 
     def inline_proc(self, _start: int, _end: int):
+        return self._impl(_start, _end, True)
+
+    def _impl(self, start: int, end: int, inline: bool) -> str:
         local_data = self.ctx.target_doc.data
         lang = local_data.get(CachedLanguageKey)
         if not lang:
@@ -72,6 +75,14 @@ class CodeHighlightEntry(CommandEntry):
         formatter = HtmlFormatter(style=mod.quiet_light)
         self.ctx.target_doc.callbacks.append(InsertStyle(formatter.get_style_defs))
 
-        code = process_nest(self.ctx, _start, _end)
+        code = process_nest(self.ctx, start, end)
         lexer = get_lexer_by_name(lang)
-        return highlight(code, lexer, formatter)
+        hightlighted_code = highlight(code, lexer, formatter)
+        if inline:
+            html = bs4.BeautifulSoup(hightlighted_code)
+            pre = html.find("pre")
+            assert isinstance(pre, bs4.Tag)
+            code_tag = html.new_tag("code")
+            code_tag.extend(pre.contents)
+            return str(code_tag)
+        return hightlighted_code
