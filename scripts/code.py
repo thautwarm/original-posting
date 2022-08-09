@@ -8,7 +8,9 @@ from original_posting.parsing import process_nest
 from wisepy2 import wise
 import pathlib
 import typing
+import textwrap
 import bs4
+
 
 if typing.TYPE_CHECKING:
     from .pygments_styles import quiet_light as mod
@@ -18,8 +20,8 @@ else:
     )
 
 
-def parse_args(lang: str = ""):
-    return lang
+def parse_args(lang: str = "", nodedent: bool = False) -> typing.Tuple[str, bool]:
+    return lang, nodedent
 
 
 class InsertStyle:
@@ -46,9 +48,10 @@ class CachedLanguageKey:
 class CodeHighlightEntry(CommandEntry):
     def __init__(self, ctx: Context):
         self.ctx = ctx
+        self.start_pos = ctx.pos
 
     def proc(self, args: list[str], _start: int, _end: int) -> str:
-        lang = wise(parse_args)(args)
+        lang, nodedent = wise(parse_args)(args)
         local_data = self.ctx.target_doc.data
         if not lang:
             lang = local_data.get(CachedLanguageKey)
@@ -59,12 +62,12 @@ class CodeHighlightEntry(CommandEntry):
         else:
             local_data[CachedLanguageKey] = lang
 
-        return self._impl(_start, _end, False)
+        return self._impl(_start, _end, inline=False, nodedent=nodedent)
 
     def inline_proc(self, _start: int, _end: int):
-        return self._impl(_start, _end, True)
+        return self._impl(_start, _end, inline=True, nodedent=True)
 
-    def _impl(self, start: int, end: int, inline: bool) -> str:
+    def _impl(self, start: int, end: int, inline: bool, nodedent: bool) -> str:
         local_data = self.ctx.target_doc.data
         lang = local_data.get(CachedLanguageKey)
         if not lang:
@@ -77,12 +80,13 @@ class CodeHighlightEntry(CommandEntry):
 
         code = process_nest(self.ctx, start, end)
         lexer = get_lexer_by_name(lang)
-        hightlighted_code = highlight(code, lexer, formatter)
         if inline:
+            hightlighted_code = highlight(code, lexer, formatter)
             html = bs4.BeautifulSoup(hightlighted_code, "html.parser")
             pre = html.find("pre")
             assert isinstance(pre, bs4.Tag)
             code_tag = html.new_tag("code")
             code_tag.contents.extend(pre.contents)
             return str(code_tag)
+        hightlighted_code = highlight(textwrap.dedent(code), lexer, formatter)
         return hightlighted_code
