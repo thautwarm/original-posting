@@ -32,11 +32,11 @@ class FootNoteCmd(CommandEntry):
             li.append(":")
             li.attrs["id"] = title
             p = _html_factory.new_tag("p")
-            li.append(p)
+            li.contents.append(p)
             p = _html_factory.new_tag("p")
-            p.append(content)
-            li.append(p)
-            ol.append(li)
+            p.contents.extend(bs4.BeautifulSoup("<div>"+content+"</div>", "html.parser").contents[0].contents) # type: ignore
+            li.contents.append(p)
+            ol.contents.append(li)
         op_doc.code += '\n' + str(hr) + "\n" + str(h2) + "\n" + str(ol)
 
 
