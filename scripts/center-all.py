@@ -8,7 +8,7 @@ style_sheet = """
 body {{
     word-wrap: break-word;
     max-width: {}px;
-    margin: 16%;
+    margin: 10%;
 }}
 """
 
