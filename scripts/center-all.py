@@ -5,11 +5,11 @@ import bs4
 import wisepy2
 
 style_sheet = """
-body {
+body {{
     word-wrap: break-word;
-    max-width: %dpx;
-    margin: auto;
-}
+    max-width: {}px;
+    margin: 16%;
+}}
 """
 
 def parse_args(*, width: int = 1200):
@@ -21,7 +21,7 @@ class AddStyleSheet:
     def __call__(self, op: OPDocument):
         html = bs4.BeautifulSoup(op.code, "html.parser")
         style = html.new_tag("style")
-        style.contents.append(bs4.Stylesheet(style_sheet % self.width))
+        style.contents.append(bs4.Stylesheet(style_sheet.format(self.width)))
         head = html.find("head")
         if isinstance(head, bs4.Tag):
             head.contents.append(style)
