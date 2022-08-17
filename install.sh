@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-cp -R scripts/ ~/.original-posting
+cp -R scripts/* ~/.original-posting/
