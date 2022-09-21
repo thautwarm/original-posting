@@ -61,8 +61,10 @@ class CodeHighlightEntry(CommandEntry):
                 )
         else:
             local_data[CachedLanguageKey] = lang
-
-        return self._impl(_start, _end - 1, inline=False, nodedent=nodedent)
+        _end_i = self.ctx.source.rfind('\n', _start + 1, _end)
+        if _end_i != -1:
+            _end = _end_i
+        return self._impl(_start, _end, inline=False, nodedent=nodedent)
 
     def inline_proc(self, _start: int, _end: int):
         return self._impl(_start, _end, inline=True, nodedent=True)
@@ -88,5 +90,6 @@ class CodeHighlightEntry(CommandEntry):
             code_tag = html.new_tag("code")
             code_tag.contents.extend(pre.contents)
             return str(code_tag)
-        hightlighted_code = highlight(textwrap.dedent(code), lexer, formatter)
+        code = textwrap.dedent(code)
+        hightlighted_code = highlight(code, lexer, formatter)
         return hightlighted_code

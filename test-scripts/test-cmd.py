@@ -9,4 +9,6 @@ class TestCmd(CommandEntry):
         self.ctx = ctx
 
     def proc(self, args: list[str], _start: int, _stop: int) -> str:
+        print(_start, _stop)
+        _stop = self.ctx.source.rindex('\n', _start + 1, _stop)
         return repr(self.ctx.source[_start:_stop])

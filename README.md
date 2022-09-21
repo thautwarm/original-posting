@@ -11,7 +11,7 @@ Markdown is not enough? Integrated MathJax is buggy? Want literate programming? 
 ## Extra Requirements of Commands
 
 0. `wisepy2>=1.3`
-1. Markdown support, `@md`: `pip install markdown2`
+1. Markdown support, `@md`: `pip install markdown`
 2. Mathjax support, `2math`:
     - `pip install javascript`
     - `nodejs` in PATH with the NPM package `mathjax-node` installed
