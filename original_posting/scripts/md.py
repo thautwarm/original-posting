@@ -7,4 +7,4 @@ class Md2Html(CommandEntry):
         self.ctx = ctx
 
     def proc(self, argv: list[str], _start: int, _stop: int) -> str:
-        return markdown.markdown(process_nest(self.ctx, _start, _stop))
+        return markdown.markdown(process_nest(self.ctx, _start, _stop), extensions=argv)
