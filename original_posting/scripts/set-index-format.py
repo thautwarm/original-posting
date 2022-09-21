@@ -1,7 +1,6 @@
 from original_posting.types import CommandEntry, Context
 from original_posting.parsing import process_nest
 import original_posting.builtin_names as names
-import markdown2
 
 class SetIndexFormat(CommandEntry):
     def __init__(self, ctx: Context):
