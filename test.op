@@ -1,0 +1,9 @@
+@begin py
+from original_posting.types import Runtime
+from pathlib import Path
+Runtime.search_path.append(str(Path('./test-scripts').absolute()))
+@end py
+
+@begin test-cmd
+    aaa
+@end test-cmd

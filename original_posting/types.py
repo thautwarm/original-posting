@@ -5,6 +5,7 @@ import typing
 import abc
 
 DEFAULT_SCRIPT_PATH = "~/.original-posting"
+DEFAULT_SCRIPT_PATH_INTERNAL = pathlib.Path(__file__).parent.joinpath("scripts").as_posix()
 
 @dataclass
 class OPDocument:
@@ -93,7 +94,7 @@ def _default_op(ctx: Context, _start: int, _stop: int) -> str:
 
 
 class Runtime:
-    search_path: list[str] = [DEFAULT_SCRIPT_PATH]
+    search_path: list[str] = [DEFAULT_SCRIPT_PATH, DEFAULT_SCRIPT_PATH_INTERNAL]
     operators: dict[typing.Literal["[]", "()", "{}"], Operator] = {
         "[]": _default_op,
         "{}": _default_op,

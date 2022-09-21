@@ -62,7 +62,7 @@ class CodeHighlightEntry(CommandEntry):
         else:
             local_data[CachedLanguageKey] = lang
 
-        return self._impl(_start, _end, inline=False, nodedent=nodedent)
+        return self._impl(_start, _end - 1, inline=False, nodedent=nodedent)
 
     def inline_proc(self, _start: int, _end: int):
         return self._impl(_start, _end, inline=True, nodedent=True)

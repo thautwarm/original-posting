@@ -42,12 +42,13 @@ Inline math like Lua comments: @math|\oplus|，inline math@math||\oplus||！
     x = 5 \\
     1 + x^2 = @py|1 + x**2|
 @end math
+
 @begin comment
 command statement:
     @begin name argument1 argument2...
         block
     @end name
-inline命令: @name + |||... + code + ...|||
+inline command: @name + |||... + code + ...|||
 @end comment
 @end md
 ```
