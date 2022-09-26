@@ -230,6 +230,8 @@ def _end_scope(builder: io.StringIO, ctx: Context, i: int):
         return False
     try:
         text = cur_scope.cmd_entry.proc(cur_scope.args, cur_scope.start, o_orig)
+        if not isinstance(text, str):
+            raise TypeError(f"command {cur_scope.name}'s `proc` method didn't return a string, but a (an) {type(text)}.")
     except Exception as e:
         raise create_syntax_error(
             f"{cur_scope.name} failed to process (args: {cur_scope.args})",
