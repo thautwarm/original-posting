@@ -48,13 +48,15 @@ class RFootNoteCmd(CommandEntry):
             li.contents.append(p)
             ol.contents.append(li)
 
-        for each in html.find_all("a", attrs={"unsolved-kind": "rfootnote-ref"}):
-            if not isinstance(each, bs4.element.Tag):
-                continue
-            del each.attrs['unsolved-kind']
-            i = order.get(each.attrs['href'][1:])
-            if i:
-                each.append(f"[{i}]")
+        ol = bs4.BeautifulSoup(str(ol), "html.parser")
+        for tag in ol, html:
+            for each in tag.find_all("a", attrs={"unsolved-kind": "rfootnote-ref"}):
+                if not isinstance(each, bs4.element.Tag):
+                    continue
+                del each.attrs['unsolved-kind']
+                i = order.get(each.attrs['href'][1:])
+                if i:
+                    each.append(f"[{i}]")
 
         for each in html.find_all("div", attrs={"unsolved-kind": "rfootnote-mk"}):
             if not isinstance(each, bs4.element.Tag):
