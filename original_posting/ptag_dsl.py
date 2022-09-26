@@ -58,6 +58,10 @@ def cps_literal(v) -> P:
 
     return apply
 
+def cps_not(p: P) -> P:
+    def apply(o, scope):
+        return not p(o, {**scope})
+    return apply
 
 _undef = object()
 
@@ -202,6 +206,9 @@ class PTagPatternBuilder(ast.NodeTransformer):
             if isinstance(v, ast.Name):
                 return cps_capture(v.id)
             raise ValueError(f"~x: x needs to be a name but got {v}")
+        if isinstance(node.op, ast.Not):
+            v = node.operand
+            return cps_not(self.visit(v))
         raise ValueError(f"UnaryOp: {node.op} is not supported")
 
     def visit_Name(self, node: ast.Name):
